@@ -1,0 +1,15 @@
+{
+  "name": "browser",
+  "main": "./lib/main",
+  "version": "0.1.0",
+  "description": "A web browser implemented in the Atom editor",
+  "activationEvents": ["browser:open"],
+  "repository": "https://github.com/mark-hahn/browser",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.120.0"
+  },
+  "dependencies": {
+    "emissary": "^1.3.1"
+  }
+}
