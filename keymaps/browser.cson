@@ -1,4 +1,4 @@
 
 '.workspace':
-  'ctrl-alt-b': 'browser:open'
+  'ctrl-alt-b': 'browser:toggle'
 

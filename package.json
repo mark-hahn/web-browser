@@ -3,7 +3,7 @@
   "main": "./lib/main",
   "version": "0.1.0",
   "description": "A web browser implemented in the Atom editor",
-  "activationEvents": ["browser:open"],
+  "activationEvents": ["browser:toggle"],
   "repository": "https://github.com/mark-hahn/browser",
   "license": "MIT",
   "engines": {

@@ -1,10 +1,13 @@
 
 # lib/main
 
-Browser = require './browser'
+Omnibox = require './omnibox'
 
 module.exports =
   activate: -> 
-    atom.workspaceView.command "browser:open", =>
-      atom.workspace.activePane.activateItem new Browser "I'm Alive!"
-
+    atom.workspaceView.command "browser:toggle", =>
+      if not @omnibox
+        @omnibox = new Omnibox
+      else
+        @omnibox.destroy()
+        @omnibox = null
