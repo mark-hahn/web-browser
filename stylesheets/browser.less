@@ -1,18 +1,88 @@
+  
+@import "octicon-utf-codes";
+@import "octicon-mixins";
 
-.workspace .browser {
-  .omnibox-input {
-    position:   relative; 
-    top:        2px; 
-    width:      100%;
-    height:     22px;
-    font-size:  14px; 
+.workspace .browser-toolbar {
+  display:    flex;
+  position:   relative;
+  height:     34px;
+  font-size:  14px; 
+  background-image: -webkit-linear-gradient(top, #d8d8d8, #efefef);
+  box-shadow: inset 0 -8px 8px -4px rgba(0, 0, 0, 0.15);
+
+  .nav-btns{
+    display: inline-block;
+    position: relative;
+    margin-top: 0.2em;
+    height: 1.1em;
+    line-height: 1.3em;
+    line-height: 0.9;
+    // font-size: 120%;
+    
+    .octicon {
+      font-family: 'Octicons Regular';
+      font-size: 1.7em;
+      font-weight: normal;
+      font-style: normal;
+      font-variant: normal;
+      text-transform: none;
+      -webkit-font-smoothing: antialiased;
+      text-decoration: none;
+      display: inline-block;
+      padding-left:  .2em;
+      padding-right: .2em;
+      opacity:       .8;
+      margin-left: 0.1em;
+      border:1px solid transparent;
+      border-radius: 0.2em;
+    }
+    .octicon.browser-btn:hover {
+      border:1px solid gray;
+      background-color: white;
+    }
+    .octicon.octicon-globe       {&:before{content: @globe}; color:#44f}
+    .octicon.octicon-arrow-left  {&:before{content: @arrow-left}}
+    .octicon.octicon-arrow-right {&:before{content: @arrow-right}}
+    .octicon.octicon-sync        {&:before{content: @sync}}
+    .octicon.octicon-three-bars  {&:before{content: @three-bars}}
+  }
+  .nav-btns.left {
+    order: 1;
+  }
+  .omnibox-container {
+    flex: 1;
+    order: 2;
+    
+    .omnibox {
+      position: relative;
+      margin-left: .4em;
+      margin-right: .4em;
+      // width:200px;
+      overflow: hidden;
+      
+      input {
+        position:   relative; 
+        top:            .3em; 
+        height:        1.8em;
+        width:          100%;
+        padding-left:  0.2em;
+        padding-right: 0.2em;
+        font-size:      14px; 
+        box-shadow:     none;
+        border:        1px solid #ccc;
+        background-color: transparent;
+      }
+    }
+  }
+  .nav-btns.right {
+    order: 3;
   }
 }
 
 .workspace .browser-page {
   .iframe {
-    width:100%;
-    height:100%;
-    scroll:auto;
+    width:  100%;
+    height: 100%;
   }
 }
+

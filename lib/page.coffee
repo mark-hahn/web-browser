@@ -9,7 +9,8 @@ urlUtil   = require 'url'
 
 module.exports =
 class Page
-  @calcTitle = (url) -> urlUtil.parse(url).pathname.replace /\//g, ' '
+  @calcTitle = (url) -> 
+    urlUtil.parse(url).pathname.replace /\//g, ' '
   
   # This may appear to not be used but the active pane code requires it
   Emitter.includeInto @

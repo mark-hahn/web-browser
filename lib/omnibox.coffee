@@ -17,4 +17,4 @@ class Omnibox
   getView: -> @omniboxView
 
   destroy: ->
-    @omniboxView.destroy?()
+    @omniboxView.destroy()

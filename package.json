@@ -1,6 +1,6 @@
 {
   "name": "browser",
-  "main": "./lib/main",
+  "main": "./lib/browser",
   "version": "0.1.0",
   "description": "A web browser implemented in the Atom editor",
   "activationEvents": ["browser:toggle"],
