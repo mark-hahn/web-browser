@@ -13,27 +13,31 @@ class OmniboxView extends View
         placeholder: 'Atom Browser: Enter URL'
         class: 'native-key-bindings'
 
-  initialize: (omnibox) ->
+  initialize: (browser) ->
     @input.val 'http://apple.com'
     
     @subscribe @input, 'keypress', (e) =>
       switch e.which
-        when 13 then omnibox.openPage @input.val()
+        when 13 
+          url = @input.val()
+          if e.ctrlKey then browser.createPage  url
+          else              browser.setLocation url
         when 27, 9 
           @input.blur()
           return false
-        
-  focused: -> @input.is ':focus'
-  
+          
+  # @focused is used in pageView for speed
   focus: (cb) -> @subscribe @input, 'focus', =>
     @input.css backgroundColor: 'white'
+    @focused = yes
     cb()
     
   blur:  (cb) -> @subscribe @input, 'blur', =>
     @input.css backgroundColor: 'transparent'
+    @focused = no
     cb()
     
-  setURL: (url) -> @input.val url
+  setText: (text) -> @input.val text
 
   destroy: ->
     @unsubscribe()
