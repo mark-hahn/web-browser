@@ -1,13 +1,14 @@
   
+@import "ui-variables";
 @import "octicon-utf-codes";
-@import "octicon-mixins";
 
 .workspace .browser-toolbar {
   display:    flex;
   position:   relative;
   height:     34px;
   font-size:  14px; 
-  background-image: -webkit-linear-gradient(top, #d8d8d8, #efefef);
+  background-image: -webkit-linear-gradient(top, @app-background-color, 
+                                                    @tab-bar-background-color);
   box-shadow: inset 0 -8px 8px -4px rgba(0, 0, 0, 0.15);
 
   .nav-btns{
@@ -17,7 +18,6 @@
     height: 1.1em;
     line-height: 1.3em;
     line-height: 0.9;
-    // font-size: 120%;
     
     .octicon {
       font-family: 'Octicons Regular';
@@ -31,14 +31,15 @@
       display: inline-block;
       padding-left:  .2em;
       padding-right: .2em;
+      color: @text-color;
       opacity:       .8;
       margin-left: 0.1em;
       border:1px solid transparent;
       border-radius: 0.2em;
     }
     .octicon.browser-btn:hover {
-      border:1px solid gray;
-      background-color: white;
+      border: 1px solid @button-border-color;
+      background-color: @button-background-color-hover;
     }
     .octicon.octicon-globe       {&:before{content: @globe}; color:#44f}
     .octicon.octicon-arrow-left  {&:before{content: @arrow-left}}
@@ -57,20 +58,25 @@
       position: relative;
       margin-left: .4em;
       margin-right: .4em;
-      // width:200px;
-      overflow: hidden;
       
       input {
         position:   relative; 
         top:            .3em; 
-        height:        1.8em;
+        height:        1.7em;
         width:          100%;
         padding-left:  0.2em;
         padding-right: 0.2em;
         font-size:      14px; 
         box-shadow:     none;
-        border:        1px solid #ccc;
+        border:        1px solid @input-border-color;
+        color:          @text-color;
         background-color: transparent;
+      }
+      input::selection {
+        background-color: @background-color-selected;
+      }
+      input:focus {
+        background-color: @input-background-color;
       }
     }
   }

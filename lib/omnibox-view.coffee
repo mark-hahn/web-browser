@@ -24,12 +24,10 @@ class OmniboxView extends View
                     
     # var @focused is used in pageView for speed
     @subscribe @input, 'focus', =>
-      @input.css backgroundColor: 'white'
       @focused = yes
       @focusCallback? yes
           
     @subscribe @input, 'blur', =>
-      @input.css backgroundColor: 'transparent'
       @focused = no
       @focusCallback? no
     

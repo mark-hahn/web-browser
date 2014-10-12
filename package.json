@@ -1,7 +1,7 @@
 {
   "name": "web-browser",
   "main": "./lib/web-browser",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A web browser that runs seamlessly in the Atom editor.",
   "activationEvents": [],
   "repository": "https://github.com/mark-hahn/web-browser",
