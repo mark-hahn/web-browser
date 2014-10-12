@@ -16,14 +16,14 @@ At this time the web-browser is not a replacement for a general-purpose web brow
 
 ## Usage
   
-- Install with `apm install browser`
-- Press `ctrl-alt-B` (`browser:toggle`) and a toolbar will appear above the tabs
+- Install with `apm install web-browser`
+- Press `ctrl-alt-B` (`web-browser:toggle`) and a toolbar will appear above the tabs
 - Enter a complete url including the `http://` at the beginning and press enter
 - To create a new tab use ctrl-enter instead
 
 ## API
 
-The API is not documented yet but the code in `lib/browser.coffee` contains all methods needed.  The `browser` object is available as `atom.webBrowser` globally.  To open a page use `createPage`.  For example, to open the apple.com web page use `atom.webBrowser.createPage 'http://apple.com'`.
+The API is not documented yet but the code in `lib/web-browser.coffee` contains all methods needed.  The `webBrowser` object is available as `atom.webBrowser` globally.  To open a page use `createPage`.  For example, to open the apple.com web page use `atom.webBrowser.createPage 'http://apple.com'`.
 
 ## Typical Incompatible Websites
 
