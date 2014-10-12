@@ -10,31 +10,29 @@ module.exports =
 class Page
   Emitter.includeInto @
 
-  @calcTitle = (url) -> 
-    urlUtil.parse(url).pathname.replace /\//g, ' '
-  
-  constructor: (@browser, @url) -> 
-    @history = new History @url
-  
-  setLocation: (@url) -> 
-    @pageView.setLocation @url
+  constructor: (@browser, @url) -> @history = new History @url
     
-  locationChanged: (@url) ->
-    @history.locationChanged @url
-    
+  getLongTitle:    -> urlUtil.parse(@url).host
+  calcTitle: (url) -> @title = urlUtil.parse(url).host
+  
   back:    -> @pageView.setLocation @history.back()
   forward: -> @pageView.setLocation @history.forward()
   refresh: -> @pageView.setLocation @url
   
-  setView: (@pageView) ->
+  setLocation: (@url) -> @pageView.setLocation @url
   
-  getBrowser:   -> @browser
-  getClass:     -> Page
-  getViewClass: -> PageView
-  getView:      -> @pageView
-  getTitle:     -> @title
-  getHistory:   -> @history
-  getURL:       -> @url
+  locationChanged: (@url) -> 
+    @browser.setOmniText @url
+    @history.locationChanged @url
+  
+  setView:    (@pageView) ->
+  getBrowser:             -> @browser
+  getClass:               -> Page
+  getViewClass:           -> PageView
+  getView:                -> @pageView
+  getTitle:               -> @title
+  getHistory:             -> @history
+  getLocation:            -> @url
   
   
 

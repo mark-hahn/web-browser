@@ -26,8 +26,8 @@ class ToolbarView extends View
     @omniboxView = new OmniboxView browser
     @omniboxContainer.append @omniboxView
     
-    @omniboxView.focus => @navBtnsRgt.hide()
-    @omniboxView.blur  => @navBtnsRgt.show()
+    @omniboxView.focus (focused) => 
+      if focused then @navBtnsRgt.hide() else @navBtnsRgt.show()
     
     @subscribe @, 'click', (e) ->
       if (classes = $(e.target).attr 'class') and 
@@ -37,11 +37,11 @@ class ToolbarView extends View
           when 'arrow-right' then browser.forward()
           when 'sync'        then browser.refresh()
       
-  getOmniboxView: -> @omniboxView
-  
+  getOmniboxView:     -> @omniboxView
   setOmniText: (text) -> @omniboxView.setText text
     
   destroy: ->
+    @unsubscribe()
     @detach()
 
 ###

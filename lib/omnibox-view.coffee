@@ -1,7 +1,7 @@
 
 # lib/omnibox-view
         
-{View} = require 'atom'
+{View}  = require 'atom'
 
 module.exports =
 class OmniboxView extends View
@@ -14,28 +14,26 @@ class OmniboxView extends View
         class: 'native-key-bindings'
 
   initialize: (browser) ->
-    @input.val 'http://apple.com'
+    @input.val 'http://'
     
     @subscribe @input, 'keypress', (e) =>
+      url = @input.val()
       switch e.which
-        when 13 
-          url = @input.val()
-          if e.ctrlKey then browser.createPage  url
-          else              browser.setLocation url
-        when 27, 9 
-          @input.blur()
-          return false
+        when 13 then browser.setLocation url; @input.blur(); return false
+        when 10 then browser.createPage  url; @input.blur(); return false
+                    
+    # var @focused is used in pageView for speed
+    @subscribe @input, 'focus', =>
+      @input.css backgroundColor: 'white'
+      @focused = yes
+      @focusCallback? yes
           
-  # @focused is used in pageView for speed
-  focus: (cb) -> @subscribe @input, 'focus', =>
-    @input.css backgroundColor: 'white'
-    @focused = yes
-    cb()
+    @subscribe @input, 'blur', =>
+      @input.css backgroundColor: 'transparent'
+      @focused = no
+      @focusCallback? no
     
-  blur:  (cb) -> @subscribe @input, 'blur', =>
-    @input.css backgroundColor: 'transparent'
-    @focused = no
-    cb()
+  focus: (@focusCallback) ->
     
   setText: (text) -> @input.val text
 

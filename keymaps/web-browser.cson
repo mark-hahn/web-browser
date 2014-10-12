@@ -1,0 +1,4 @@
+
+'.workspace':
+  'ctrl-alt-b': 'web-browser:toggle'
+

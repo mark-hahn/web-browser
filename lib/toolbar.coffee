@@ -11,8 +11,7 @@ class Toolbar
     
   getView: -> @toolbarView
   
-  getOmniboxView: -> @toolbarView.getOmniboxView()
-  
+  getOmniboxView:     -> @toolbarView.getOmniboxView()
   setOmniText: (text) -> @toolbarView.setOmniText text
 
   destroy: ->

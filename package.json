@@ -1,10 +1,10 @@
 {
-  "name": "browser",
-  "main": "./lib/browser",
+  "name": "web-browser",
+  "main": "./lib/web-browser",
   "version": "0.1.0",
-  "description": "A web browser implemented in the Atom editor",
-  "activationEvents": ["browser:toggle"],
-  "repository": "https://github.com/mark-hahn/browser",
+  "description": "A web browser that runs seamlessly in the Atom editor.",
+  "activationEvents": [],
+  "repository": "https://github.com/mark-hahn/web-browser",
   "license": "MIT",
   "engines": {
     "atom": ">0.120.0"
