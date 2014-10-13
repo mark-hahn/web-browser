@@ -12,12 +12,13 @@ class OmniboxView extends View
         outlet: 'input'
         placeholder: 'Atom Browser: Enter URL'
         class: 'native-key-bindings'
+        value: 'https://gmail.com'
 
   initialize: (browser) ->
-    @input.val 'http://atom.io'
-    
     @subscribe @input, 'keydown', (e) =>
       url = @input.val()
+      if not /^https?\/\//i.test url
+        url = 'http://' + url
       switch e.which
         when 13 # cr
           if e.ctrlKey then browser.createPage  url; @input.blur()

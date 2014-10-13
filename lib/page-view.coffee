@@ -11,8 +11,8 @@ class PageView extends View
       @iframe
         outlet:   'iframe'
         class:    'iframe'
-        name:     'disable-x-frame-options'
-        sandbox:  'none'
+        name:     'browser-page-disable-x-frame-options'
+        sandbox:  'allow-forms allow-popups allow-pointer-lock allow-same-origin allow-scripts'
         allowfullscreen: yes
         
   initialize: (page) ->
