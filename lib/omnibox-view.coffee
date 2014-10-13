@@ -12,7 +12,6 @@ class OmniboxView extends View
         outlet: 'input'
         placeholder: 'Atom Browser: Enter URL'
         class: 'native-key-bindings'
-        value: 'https://gmail.com'
 
   initialize: (browser) ->
     @subscribe @input, 'keydown', (e) =>

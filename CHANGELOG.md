@@ -1,3 +1,7 @@
+## 0.2.1 - 2014/10/13
+
+- Removed test value from omnibar
+
 ## 0.2.0 - 2014/10/13
 
 - fixed crashes on pages like github.com
