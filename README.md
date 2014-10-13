@@ -4,7 +4,7 @@ A web browser that runs seamlessly in the Atom editor
 
 ![Animated GIF](https://github.com/mark-hahn/web-browser/blob/master/screenshots/browser.gif?raw=true)
 
-**Warning:** This is a preliminary version.  Visiting certain pages (see *Typical Incompatible Websites* below) will cause the Atom window to crash and disappear.  If you are browsing arbitrary pages make sure you work is saved. 
+**Warning:** This is a preliminary version.  Visiting certain pages (see *Typical Incompatible Websites* below) will cause the Atom window to crash and disappear.  If you are browsing arbitrary pages make sure your work is saved. 
 
 This is a web browser tightly integrated into the Atom editor.  The web pages appear in the normal editor tabs.  The pages are fully functional with scripting and linking. A browser toolbar appears at the top of the Atom window to allow simple webpage navigation.
 

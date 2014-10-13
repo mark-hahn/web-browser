@@ -15,7 +15,8 @@ class ToolbarView extends View
         @span class:'octicon browser-btn octicon-arrow-left'
         @span class:'octicon browser-btn octicon-arrow-right'
         @span class:'octicon browser-btn octicon-sync'
-        
+      
+      @img outlet:'favicon', class:'favicon'
       @div outlet:'omniboxContainer', class:'omnibox-container'
       
       @div outlet: 'navBtnsRgt', class:'nav-btns right', =>
@@ -26,19 +27,24 @@ class ToolbarView extends View
     @omniboxView = new OmniboxView browser
     @omniboxContainer.append @omniboxView
     
-    @omniboxView.focus (focused) => 
-      if focused then @navBtnsRgt.hide() else @navBtnsRgt.show()
+    @omniboxView.onFocusChg (@isFocused) => 
+      if @isFocused then @navBtnsRgt.hide() else @navBtnsRgt.show()
     
     @subscribe @, 'click', (e) ->
       if (classes = $(e.target).attr 'class') and 
          (btnIdx  = classes.indexOf 'octicon-') > -1
         switch classes[btnIdx+8...]
+          when 'globe'       then browser.destroyToolbar()
           when 'arrow-left'  then browser.back()
           when 'arrow-right' then browser.forward()
           when 'sync'        then browser.refresh()
-      
+  focus:   -> @omniboxView.focus()
+  focused: -> @isFocused
+
   getOmniboxView:     -> @omniboxView
   setOmniText: (text) -> @omniboxView.setText text
+  setFaviconDomain: (domain) -> 
+    @favicon.attr src: "http://www.google.com/s2/favicons?domain=#{domain}"
     
   destroy: ->
     @unsubscribe()

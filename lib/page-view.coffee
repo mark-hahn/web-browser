@@ -9,33 +9,38 @@ class PageView extends View
   @content: ->
     @div class:'browser-page', tabindex:-1, =>
       @iframe
-        name: 'disable-x-frame-options'
-        outlet:'iframe'
-        class:'iframe'
-        sandbox: 'none'
+        outlet:   'iframe'
+        class:    'iframe'
+        name:     'disable-x-frame-options'
+        sandbox:  'none'
         allowfullscreen: yes
         
   initialize: (page) ->
     page.setView @
     browser     = page.getBrowser()
     omniboxView = browser.getOmniboxView()
-    url         = page.getLocation()
+    tabBarView  = atom.workspaceView.find('.pane.active').find('.tab-bar').view()
+    tabView     = tabBarView.tabForItem page
+    $tabView    = $ tabView
+    url         = page.getPath()
+    
+    #debug
+    @subscribe @, 'click', (e) => console.log 'PageView click', e.ctrlKey
     
     @setLocation url
-    setTimeout =>
-      @$tabTitle = $ '.workspace .tab.active .title'
-    , 100
     
-    @urlInterval = setInterval =>
-      if not omniboxView.focused
-        url = @iframe[0].contentWindow?.location.href ? ''
-        if url isnt @lastUrl
-          @lastUrl = url
-          if (browser.getActivePage() is page)
-            page.locationChanged url
-            if (title = page.calcTitle url)
-              @$tabTitle?.text title
-    , 100
+    @subscribe @iframe, 'load', =>
+      iframeEle = @iframe[0]
+      page.locationChanged (url = iframeEle.contentWindow.location.href)
+      page.setTitle iframeEle.contentDocument.title
+      tabView.updateTitle()
+      
+    @$tabFavicon = $ '<img class="tab-favicon">'
+    $tabView.append @$tabFavicon
+    $tabView.find('.title').css paddingLeft: 20
+  
+  setFaviconDomain: (domain) -> 
+    @$tabFavicon.attr src: "http://www.google.com/s2/favicons?domain=#{domain}"
     
   setLocation: (url) -> @iframe.attr src: url
     
@@ -43,4 +48,3 @@ class PageView extends View
     clearInterval @urlInterval
     @detach()
 
-  

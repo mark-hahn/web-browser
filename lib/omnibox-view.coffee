@@ -14,14 +14,19 @@ class OmniboxView extends View
         class: 'native-key-bindings'
 
   initialize: (browser) ->
-    @input.val 'http://'
+    @input.val 'http://atom.io'
     
-    @subscribe @input, 'keypress', (e) =>
+    @subscribe @input, 'keydown', (e) =>
       url = @input.val()
       switch e.which
-        when 13 then browser.setLocation url; @input.blur(); return false
-        when 10 then browser.createPage  url; @input.blur(); return false
-                    
+        when 13 # cr
+          if e.ctrlKey then browser.createPage  url; @input.blur()
+          else              browser.setLocation url; @input.blur()
+        when  9 then                                 @input.blur() # tab
+        when 27 then        browser.getToolbar().destroy();        # esc           
+        else return
+      false
+      
     # var @focused is used in pageView for speed
     @subscribe @input, 'focus', =>
       @focused = yes
@@ -31,7 +36,8 @@ class OmniboxView extends View
       @focused = no
       @focusCallback? no
     
-  focus: (@focusCallback) ->
+  focus: -> @input.focus()
+  onFocusChg: (@focusCallback) ->
     
   setText: (text) -> @input.val text
 

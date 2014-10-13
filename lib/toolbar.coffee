@@ -11,8 +11,12 @@ class Toolbar
     
   getView: -> @toolbarView
   
-  getOmniboxView:     -> @toolbarView.getOmniboxView()
-  setOmniText: (text) -> @toolbarView.setOmniText text
+  focus:   -> @toolbarView.focus()
+  focused: -> @toolbarView.focused()
+  
+  getOmniboxView:            -> @toolbarView.getOmniboxView()
+  setOmniText:        (text) -> @toolbarView.setOmniText text
+  setFaviconDomain: (domain) -> @toolbarView.setFaviconDomain domain
 
   destroy: ->
     @toolbarView.destroy?()

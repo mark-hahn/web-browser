@@ -8,14 +8,23 @@ class WebBrowser
   activate: ->
     atom.webBrowser = @ 
     atom.workspaceView.command "web-browser:toggle", =>
-      if not @toolbar
-        @toolbar = new Toolbar @
-      else
-        @toolbar.destroy()
-        @toolbar = null
+      switch
+        when not @toolbar 
+          @toolbar = new Toolbar @
+          @toolbar.focus()
+        when not @toolbar.focused()
+          @toolbar.focus()
+        else
+          @destroyToolbar()
         
-  getOmniboxView:     -> @toolbar.getOmniboxView()
-  setOmniText: (text) -> @toolbar.setOmniText text
+  getToolbar:                -> @toolbar
+  getOmniboxView:            -> @toolbar?.getOmniboxView()
+  setOmniText:        (text) -> @toolbar?.setOmniText text
+  setFaviconDomain: (domain) -> @toolbar?.setFaviconDomain domain
+  
+  destroyToolbar: -> 
+    @toolbar.destroy()
+    @toolbar = null
     
   createPage: (url) ->
     @toolbar ?= new Toolbar @
