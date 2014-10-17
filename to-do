@@ -1,7 +1,5 @@
 
-show proper icon/omnitext on ...
-  toolbar open
-  tab change
+search
 
 ctrl-click in web page
 
@@ -10,8 +8,10 @@ save iframes in history list
 recently viewed pages
 bookmarks
   C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default\Bookmarks
-  http://stackoverflow.com/questions/5217994/manipulating-google-chrome-bookmarks-from-external-program-and-make-chrome-awar
+  C:\Users\Administrator\AppData\Roaming\Mozilla\Firefox\Profiles\y6kobejr.default-1378875923268\bookmarkbackups
   
 settings
   close web toolbar on last webpage close
-  bookmark file location
+  bookmark file locations
+  
+new keybinding?

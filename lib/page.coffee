@@ -25,10 +25,13 @@ class Page
   
   locationChanged: (@url) -> 
     @history.locationChanged @url
-    @browser.setOmniText     @url
+    @update()
+    
+  update: ->
+    @browser.setOmniText @url
     faviconDomain = urlUtil.parse(@url).hostname
-    @browser.setFaviconDomain  faviconDomain
     @pageView.setFaviconDomain faviconDomain
+    @browser.setFaviconDomain faviconDomain
   
   setView: (@pageView) ->
   getBrowser:   -> @browser

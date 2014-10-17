@@ -11,6 +11,9 @@ class Toolbar
     
   getView: -> @toolbarView
   
+  visible: -> @toolbarView.is ':visible'
+  show:    -> @toolbarView.show()
+  hide:    -> @toolbarView.hide()
   focus:   -> @toolbarView.focus()
   focused: -> @toolbarView.focused()
   

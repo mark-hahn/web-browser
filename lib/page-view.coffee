@@ -25,15 +25,22 @@ class PageView extends View
     url         = page.getPath()
     
     #debug
-    @subscribe @, 'click', (e) => console.log 'PageView click', e.ctrlKey
+    # @subscribe @, 'click', (e) => console.log 'PageView click', e.ctrlKey
     
     @setLocation url
     
     @subscribe @iframe, 'load', =>
-      iframeEle = @iframe[0]
-      page.locationChanged (url = iframeEle.contentWindow.location.href)
-      page.setTitle iframeEle.contentDocument.title
-      tabView.updateTitle()
+      $document  = @iframe.contents()
+      url        = $document[0].URL
+      $head      = $document.find 'head'
+      $body      = $document.find 'body'
+      title      = $head.find('title').text()
+      page.locationChanged url
+      page.setTitle title
+      
+      # $body.append "<script>console.log('xxx')</script>"
+      
+      console.log '@iframe.contents', {url, title}
       
     @$tabFavicon = $ '<img class="tab-favicon">'
     $tabView.append @$tabFavicon

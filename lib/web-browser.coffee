@@ -8,14 +8,18 @@ class WebBrowser
   activate: ->
     atom.webBrowser = @ 
     atom.workspaceView.command "web-browser:toggle", =>
+      @toolbar ?= new Toolbar @
       switch
-        when not @toolbar 
-          @toolbar = new Toolbar @
-          @toolbar.focus()
+        when not @toolbar.visible()
+          @toolbar.show().focus()
         when not @toolbar.focused()
           @toolbar.focus()
         else
-          @destroyToolbar()
+          @toolbar.hide()
+          
+    atom.workspace.onDidChangeActivePaneItem =>
+      if @getActivePage() then @page.update()
+      else if @page then @page.locationChanged @page.getPath()
         
   getToolbar:                -> @toolbar
   getOmniboxView:            -> @toolbar?.getOmniboxView()
@@ -33,15 +37,15 @@ class WebBrowser
   setLocation: (url) ->
     @toolbar ?= new Toolbar @
     @toolbar.setOmniText url
-    if (page = @getActivePage()) then page.setLocation url
+    if @getActivePage()?.setLocation url
     else @createPage url
       
   getActivePage: ->
     page = atom.workspace.getActivePaneItem()
-    (if page instanceof Page then page)
+    if page instanceof Page then @page = page; return @page
 
-  back:    -> if (page = @getActivePage()) then page.back()
-  forward: -> if (page = @getActivePage()) then page.forward()
-  refresh: -> if (page = @getActivePage()) then page.refresh()
+  back:    -> @getActivePage()?.back()
+  forward: -> @getActivePage()?.forward()
+  refresh: -> @getActivePage()?.refresh()
     
 module.exports = new WebBrowser

@@ -18,6 +18,7 @@ The browser has a simple API for other Atom packages to use.  @kgrossjo on the A
 - To later create a new tab use ctrl-enter instead
 - Press `ctrl-alt-B` again to refocus input
 - Press `ctrl-alt-B` again to close toolbar
+- Click on globe in toolbar to close the toolbar (secret feature)
 
 ## API
 
@@ -29,6 +30,10 @@ The API is not documented yet but the code in `lib/web-browser.coffee` contains 
   - Bookmarks
   - Recently visited sites
   - Options
+  
+  
+- Missing features that may be added
+  - Uploads and Downloads
   
   
 - Features that will probably not be added

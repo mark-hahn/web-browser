@@ -10,14 +10,13 @@ class OmniboxView extends View
     @div class:'omnibox', tabindex:-1, =>
       @input 
         outlet: 'input'
-        placeholder: 'Atom Browser: Enter URL'
+        placeholder: 'Web-Browser: Enter URL'
         class: 'native-key-bindings'
 
   initialize: (browser) ->
     @subscribe @input, 'keydown', (e) =>
       url = @input.val()
-      if not /^https?\/\//i.test url
-        url = 'http://' + url
+      if not /^\w+:\/\//.test url then url = 'http://' + url
       switch e.which
         when 13 # cr
           if e.ctrlKey then browser.createPage  url; @input.blur()

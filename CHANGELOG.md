@@ -1,3 +1,9 @@
+## 0.2.2 - 2014/10/16
+
+- cleaned up iframe margins and border
+- now allows file:// access
+- fixed double protocols like:  http://http://xxx.com
+
 ## 0.2.1 - 2014/10/13
 
 - Removed test value from omnibar

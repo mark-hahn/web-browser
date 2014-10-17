@@ -26,6 +26,7 @@ class ToolbarView extends View
     atom.workspaceView.prependToTop @
     @omniboxView = new OmniboxView browser
     @omniboxContainer.append @omniboxView
+    @setOmniText ''
     
     @omniboxView.onFocusChg (@isFocused) => 
       if @isFocused then @navBtnsRgt.hide() else @navBtnsRgt.show()
@@ -38,11 +39,15 @@ class ToolbarView extends View
           when 'arrow-left'  then browser.back()
           when 'arrow-right' then browser.forward()
           when 'sync'        then browser.refresh()
+          
   focus:   -> @omniboxView.focus()
   focused: -> @isFocused
 
-  getOmniboxView:     -> @omniboxView
-  setOmniText: (text) -> @omniboxView.setText text
+  getOmniboxView: -> @omniboxView
+  setOmniText: (text) -> 
+    @omniboxView.setText text
+    if not text then @setFaviconDomain 'atom.io'
+    
   setFaviconDomain: (domain) -> 
     @favicon.attr src: "http://www.google.com/s2/favicons?domain=#{domain}"
     
