@@ -10,6 +10,10 @@ The browser is quite useful for testing a web page inside the same programming e
 
 The browser has a simple API for other Atom packages to use.  @kgrossjo on the Atom discussion board suggested a package that allows clicking on a word in source code and showing the web page documention for the word.
 
+### News (2014-11-02)
+
+The package `command-toolbar` now supports buttons to save webpages and open them at any time with a single click.  This means that it can act as a "favorites" toolbar for this `web-browser` package.  It also provides buttons to execute any Atom command and open any text file, just like using the file tree.
+
 ## Usage
   
 - Install with `apm install web-browser`

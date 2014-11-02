@@ -39,8 +39,7 @@ class PageView extends View
       page.setTitle title
       
       # $body.append "<script>console.log('xxx')</script>"
-      
-      console.log '@iframe.contents', {url, title}
+      # console.log '@iframe.contents', {url, title}
       
     @$tabFavicon = $ '<img class="tab-favicon">'
     $tabView.append @$tabFavicon

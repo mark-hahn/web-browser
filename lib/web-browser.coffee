@@ -20,7 +20,13 @@ class WebBrowser
     atom.workspace.onDidChangeActivePaneItem =>
       if @getActivePage() then @page.update()
       else if @page then @page.locationChanged @page.getPath()
+      
+    @opener = (filePath, options) =>
+      if /^https?:\/\//.test filePath
+        new Page @, filePath
         
+    atom.workspace.registerOpener @opener
+    
   getToolbar:                -> @toolbar
   getOmniboxView:            -> @toolbar?.getOmniboxView()
   setOmniText:        (text) -> @toolbar?.setOmniText text
@@ -47,5 +53,8 @@ class WebBrowser
   back:    -> @getActivePage()?.back()
   forward: -> @getActivePage()?.forward()
   refresh: -> @getActivePage()?.refresh()
+  
+  deactivate: ->
+    atom.workspace.unregisterOpener @opener
     
 module.exports = new WebBrowser

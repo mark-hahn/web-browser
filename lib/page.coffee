@@ -30,7 +30,7 @@ class Page
   update: ->
     @browser.setOmniText @url
     faviconDomain = urlUtil.parse(@url).hostname
-    @pageView.setFaviconDomain faviconDomain
+    @pageView?.setFaviconDomain faviconDomain
     @browser.setFaviconDomain faviconDomain
   
   setView: (@pageView) ->

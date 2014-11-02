@@ -1,3 +1,8 @@
+## 0.2.3 - 2014/10/16
+
+- Added support for opening URLs
+- Supports command-toolbar package for favorites
+
 ## 0.2.2 - 2014/10/16
 
 - cleaned up iframe margins and border
