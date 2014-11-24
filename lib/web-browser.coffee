@@ -22,8 +22,10 @@ class WebBrowser
       else if @page then @page.locationChanged @page.getPath()
       
     @opener = (filePath, options) =>
-      if /^https?:\/\//.test filePath
-        new Page @, filePath
+      console.log '@opener', filePath
+      if (matches = /https?:\/\/.*$/i.exec filePath)
+        console.log '@opener match', matches
+        new Page @, matches[0]
         
     atom.workspace.registerOpener @opener
     
