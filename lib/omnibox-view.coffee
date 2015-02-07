@@ -28,7 +28,9 @@ class OmniboxView extends View
       switch e.which
         when 13 # cr
           url = @input.val().replace /\/$/, ''
-          if not /[\.]/.test(url) or /\s/.test(url)
+          if (not /^\w+:\/\// .test(url)  and
+              not /^localhost/.test(url)) and
+              (not /[\.]/.test(url) or /\s/.test(url))
             url = 'https://www.google.com/search?q=' + encodeURI url
           else
             if not /^\w+:\/\//.test url then url = 'http://' + url

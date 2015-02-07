@@ -1,3 +1,7 @@
+## 1.1.1 - 2015/2/7
+
+- smarter search detection
+
 ## 1.1.0 - 2015/2/7
 
 - Favicion appearance (thanks @braver)
