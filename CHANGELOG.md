@@ -1,3 +1,7 @@
+## 1.1.0 - 2015/2/7
+
+- Favicion appearance (thanks @braver)
+
 ## 1.0.0 - 2015/2/6
 
 - switched from iFrame to webview
