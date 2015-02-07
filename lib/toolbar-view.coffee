@@ -1,8 +1,9 @@
 
 # lib/toolbar-view
 
-{$, View}  = require 'atom'
+{$, View}   = require 'atom'
 OmniboxView = require './omnibox-view'
+SubAtom     = require 'sub-atom'
 
 module.exports =
 class ToolbarView extends View
@@ -11,64 +12,51 @@ class ToolbarView extends View
     @div class:'browser-toolbar', tabindex:-1, =>
       
       @div outlet: 'navBtnsLft', class:'nav-btns left', =>
-        @span class:'octicon octicon-globe'
-        @span class:'octicon browser-btn octicon-arrow-left'
-        @span class:'octicon browser-btn octicon-arrow-right'
-        @span class:'octicon browser-btn octicon-sync'
+        @span outlet: 'globeBtn',   class:'octicon octicon-globe'
+        @span outlet: 'backBtn',    class:'octicon browser-btn octicon-arrow-left'
+        @span outlet: 'fwdBtn',     class:'octicon browser-btn octicon-arrow-right'
+        @span outlet: 'reloadBtn',  class:'octicon browser-btn octicon-sync'
       
-      @img outlet:'favicon', class:'favicon'
       @div outlet:'omniboxContainer', class:'omnibox-container'
       
       @div outlet: 'navBtnsRgt', class:'nav-btns right', =>
         @span class:'octicon browser-btn octicon-three-bars'
         
-  initialize: (browser) ->
-    atom.workspaceView.prependToTop @
-    @omniboxView = new OmniboxView browser
+  initialize: (@browser) ->
+    @subs = new SubAtom
+    atom.workspace.addTopPanel item: @
+    @omniboxView = new OmniboxView @browser
     @omniboxContainer.append @omniboxView
-    @setOmniText ''
+    @setURL ''
+    @setEvents()
     
-    @omniboxView.onFocusChg (@isFocused) => 
-      if @isFocused then @navBtnsRgt.hide() else @navBtnsRgt.show()
-    
-    @subscribe @, 'click', (e) ->
-      if (classes = $(e.target).attr 'class') and 
-         (btnIdx  = classes.indexOf 'octicon-') > -1
-        switch classes[btnIdx+8...]
-          when 'globe'       then browser.destroyToolbar()
-          when 'arrow-left'  then browser.back()
-          when 'arrow-right' then browser.forward()
-          when 'sync'        then browser.refresh()
-          
+  setNavControls: ({@goBack, @goForward, @reload, canGoBack, canGoForward, canReload}) -> 
+    if canGoBack    then @backBtn  .removeClass 'disabled'
+    else                 @backBtn  .addClass    'disabled'
+    if canGoForward then @fwdBtn   .removeClass 'disabled'
+    else                 @fwdBtn   .addClass    'disabled'
+    if canReload    then @reloadBtn.removeClass 'disabled'
+    else                 @reloadBtn.addClass    'disabled'
+  
   focus:   -> @omniboxView.focus()
   focused: -> @isFocused
 
   getOmniboxView: -> @omniboxView
-  setOmniText: (text) -> 
-    @omniboxView.setText text
-    if not text then @setFaviconDomain 'atom.io'
+  setURL:  (@url) -> @omniboxView.setURL url
     
-  setFaviconDomain: (domain) -> 
-    @favicon.attr src: "http://www.google.com/s2/favicons?domain=#{domain}"
+  setEvents: ->
+    @omniboxView.onFocusChg (@isFocused) => 
+      if @isFocused then @navBtnsRgt.hide() else @navBtnsRgt.show()
     
+    @subs.add @, 'click', (e) =>
+      if (classes = $(e.target).attr 'class') and 
+         (btnIdx  = classes.indexOf 'octicon-') > -1
+        switch classes[btnIdx+8...]
+          when 'globe'       then @browser.hideToolbar()
+          when 'arrow-left'  then @goBack?()
+          when 'arrow-right' then @goForward?()
+          when 'sync'        then @reload?()
+          
   destroy: ->
-    @unsubscribe()
+    @subs.dispose()
     @detach()
-
-###
-  octicon-bookmark
-  bug
-  chevron-left
-  chevron-right
-  file-directory
-  gear
-  globe
-  history
-  pencil
-  pin
-  plus
-  star
-  heart
-  sync
-  x
-###

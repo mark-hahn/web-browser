@@ -1,20 +1,21 @@
 
+atom-specific omnibox features
+  context-help
+
 live reload
-
-allow embedded urls in opener for atom commandline
-
-search
-
-ctrl-click in web page
-
-save iframes in history list
 
 recently viewed pages
   
 settings
-  close web toolbar on last webpage close
-  bookmark file locations
+  close web toolbar on last webpage close (false)
+  new tabs in front (true)
   
-new keybinding?
+start atom with the command atom http://apple.com
+  (opener not getting called)
 
+> could webview give an event with the URL when the mouse hovers over a link?
+  You can make use of the preload attribute to load a script in webview to capture 
+  the hovering events on links and then use ipc.sendToHost API to tell the host page.
 
+bugs ...
+  

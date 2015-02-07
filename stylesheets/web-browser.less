@@ -4,9 +4,10 @@
 
 .tab-bar .tab .tab-favicon {
   position: absolute;
-  top:    .4em;
-  width:  16px;
-  height: 16px;
+  left:   .5em;
+  top:    .5em;
+  width:  1.6em;
+  height: 1.6em;
 }
 
 .workspace .browser-toolbar {
@@ -57,16 +58,9 @@
   .nav-btns.left {
     order: 1;
   }
-
-  .favicon {
-    position: absolute;
-    left:   9.85em;
-    top:    .55em;
-    width:  16px;
-    height: 16px;
-    z-index: 1;
+  .nav-btns .disabled {
+    color:gray;
   }
-
   .omnibox-container {
     flex: 1;
     order: 3;
@@ -81,7 +75,7 @@
         top:            .3em; 
         height:        1.7em;
         width:          100%;
-        padding-left:  1.6em;
+        padding-left:  0.3em;
         padding-right: 0.2em;
         font-size:      14px; 
         box-shadow:     none;

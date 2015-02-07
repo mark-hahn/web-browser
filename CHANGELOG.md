@@ -1,3 +1,13 @@
+## 1.0.0 - 2015/2/6
+
+- switched from iFrame to webview
+  - fixed XSS exception
+  - ctrl-click links
+  - page position persistent on fwd/back
+- added google search to omnibar
+- webpage loading indicator
+- cut activation time in half
+
 ## 0.2.3 - 2014/10/16
 
 - Added support for opening URLs
