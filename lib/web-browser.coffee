@@ -2,6 +2,14 @@
 # lib/web-browser
 
 class WebBrowser
+  config:
+    autoReloadDelay:
+      title: 'Delay in seconds before auto-reload'
+      type: 'number'
+      default: 1.0
+      minimum: 0.0
+      maximum: 5.0
+
   activate: ->
     atom.commands.add 'atom-workspace', 'web-browser:toggle': =>
       @delayedActivate()
@@ -49,8 +57,8 @@ class WebBrowser
       
   clearVisiblePage: ->
     @toolbar.setNavControls 
-      goBack: null, goForward: null, reload:null
-      canGoBack: no, canGoForward: no, canReload: no
+      goBack: null, goForward: null, reload: null, toggleLive: null
+      canGoBack: no, canGoForward: no, canReload: no, canToggleLive: no
     @visiblePage = null
 
   setEvents: ->
@@ -62,6 +70,9 @@ class WebBrowser
           @toolbar.setURL item.getPath()
       else
         @clearVisiblePage()
+    atom.commands.add 'atom-workspace', 'core:save', => 
+      for page in @allPages
+        page?.didSaveText()
         
   pageDestroyed: (pageIn) ->
     for page, idx in @allPages

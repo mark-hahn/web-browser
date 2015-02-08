@@ -12,6 +12,12 @@ class Page
   setTitle:   (@title) ->
   setURL:       (@url) -> @pageView.setURL url
   
+  setLive: (@live) -> 
+  didSaveText: -> 
+    if @live then setTimeout =>
+      @pageView.reload()
+    , 1000 * atom.config.get 'web-browser.autoReloadDelay'
+  
   update:        -> @pageView.update()
   getTitle:      -> @title or urlUtil.parse(@url).host
   getLongTitle:  -> @getTitle()

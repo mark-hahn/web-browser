@@ -3,13 +3,18 @@
 @import "octicon-utf-codes";
 
 @faviconsize: 16px;
-.tab-bar .tab .tab-favicon {
-  position: absolute;
-  left:   .5em;
-  top:    50%;
-  width:  @faviconsize;
-  height: @faviconsize;
-  margin-top: @faviconsize / -2;
+.tab-bar .tab {
+  &.live .tab-favicon {
+    border: 1px dashed red;
+  }
+  .tab-favicon {
+    position: absolute;
+    left:   .5em;
+    top:    50%;
+    width:  @faviconsize;
+    height: @faviconsize;
+    margin-top: @faviconsize / -2;
+  }
 }
 
 .workspace .browser-toolbar {
@@ -51,11 +56,12 @@
       border: 1px solid @button-border-color;
       background-color: @button-background-color-hover;
     }
-    .octicon.octicon-globe       {&:before{content: @globe}; color:#44f}
-    .octicon.octicon-arrow-left  {&:before{content: @arrow-left}}
-    .octicon.octicon-arrow-right {&:before{content: @arrow-right}}
-    .octicon.octicon-sync        {&:before{content: @sync}}
-    .octicon.octicon-three-bars  {&:before{content: @three-bars}}
+    .octicon.octicon-globe              {&:before{content: @globe}; color:#44f}
+    .octicon.octicon-arrow-left         {&:before{content: @arrow-left}}
+    .octicon.octicon-arrow-right        {&:before{content: @arrow-right}}
+    .octicon.octicon-sync               {&:before{content: @sync}}
+    .octicon.octicon-three-bars         {&:before{content: @three-bars}}
+    .octicon.octicon-file-symlink-file  {&:before{content: @file-symlink-file}}
   }
   .nav-btns.left {
     order: 1;

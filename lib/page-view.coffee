@@ -48,20 +48,30 @@ class PageView extends View
       # #console.log 'setting webview src', @url
       @update()
       @webview.attr src: @url
+      
+  toggleLive: ->
+    @live = not @live
+    @page.setLive @live
+    @update()
+    
+  reload: -> @webviewEle.reload()
 
   update: ->
     @setFavicon urlUtil.parse(@url).hostname
     @title ?= @page.getTitle()
     @page.setTitle @title
-    # #console.log 'updateTitle', @title
     @tabEle.updateTitle @title
+    if @live then @tabEle.classList.add    'live'
+    else          @tabEle.classList.remove 'live'
     @browser.setNavControls
-      reload:       @webviewProto.reload   .bind @webviewEle
-      goBack:       @webviewProto.goBack   .bind @webviewEle
-      goForward:    @webviewProto.goForward.bind @webviewEle
-      canReload:    yes
-      canGoBack:    (if @chkVisible() then @webviewEle.canGoBack())
-      canGoForward: (if @chkVisible() then @webviewEle.canGoForward())
+      goBack:        @webviewProto.goBack   .bind @webviewEle
+      goForward:     @webviewProto.goForward.bind @webviewEle
+      reload:        @reload.bind @
+      toggleLive:    @toggleLive.bind @
+      canReload:     yes
+      canGoBack:     (if @chkVisible() then @webviewEle.canGoBack())
+      canGoForward:  (if @chkVisible() then @webviewEle.canGoForward())
+      canToggleLive: yes
     , @page
 
   setFavicon: (domain) ->

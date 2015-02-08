@@ -1,3 +1,7 @@
+## 1.1.2 - 2015/2/7
+
+- added auto-reload feature
+
 ## 1.1.1 - 2015/2/7
 
 - smarter search detection
