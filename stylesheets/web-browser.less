@@ -3,9 +3,33 @@
 @import "octicon-utf-codes";
 
 @faviconsize: 16px;
+
+.octicon-mixin() {
+  font-family: 'Octicons Regular';
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+}
+
 .tab-bar .tab {
-  &.live .tab-favicon {
-    border: 1px dashed red;
+  &.live {
+    .title:after {
+      .octicon-mixin();
+      content: @sync;
+      position: absolute;
+      display: block;
+      top: 0;
+      left: @faviconsize;
+      width: @faviconsize;
+      height: @faviconsize;
+      font-size: @faviconsize;
+      line-height: 1;
+      color: #44f;
+      text-shadow: 0 0 1px rgba(0,0,0,.66);
+    }
   }
   .tab-favicon {
     position: absolute;
@@ -35,14 +59,8 @@
     line-height: 0.9;
 
     .octicon {
-      font-family: 'Octicons Regular';
+      .octicon-mixin();
       font-size: 1.7em;
-      font-weight: normal;
-      font-style: normal;
-      font-variant: normal;
-      text-transform: none;
-      -webkit-font-smoothing: antialiased;
-      text-decoration: none;
       display: inline-block;
       padding-left:  .2em;
       padding-right: .2em;
