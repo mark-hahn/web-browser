@@ -34,8 +34,11 @@ class WebBrowser
       @allPages = []
       @setEvents()    
       
-  hideToolbar: -> @toolbar.hide()
-  
+  #### public ####
+
+  createPage: (url) ->
+    atom.workspace.getActivePane().activateItem @newPage url
+
   setUrlOrCreatePage: (url) ->
     url = url.replace /\/$/, ''
     if @visiblePage 
@@ -43,19 +46,23 @@ class WebBrowser
       @visiblePage.setURL url
     else 
       @createPage url
+      
+  #### private ####
 
-  createPage: (url) ->
-    url = url.replace /\/$/, ''
-    @toolbar.setURL url
+  hideToolbar: -> @toolbar.hide()
+  
+  newPage: (url) ->
     @visiblePage = new @Page(@, url)
     @allPages.push @visiblePage
-    atom.workspace.getActivePane().activateItem @visiblePage
+    @toolbar.setURL url
+    @visiblePage
 
   setNavControls: (controls, fromPage) -> 
     if not fromPage or fromPage is @visiblePage
       @toolbar.setNavControls controls
       
   clearVisiblePage: ->
+    # console.log 'clearVisiblePage', @visiblePage?.getView?()?.dbg
     @toolbar.setNavControls 
       goBack: null, goForward: null, reload: null, toggleLive: null
       canGoBack: no, canGoForward: no, canReload: no, canToggleLive: no
@@ -63,11 +70,13 @@ class WebBrowser
 
   setEvents: ->
     @subs.add atom.workspace.onDidChangeActivePaneItem (item) =>
+      # console.log 'onDidChangeActivePaneItem', item?.getView?()?.dbg
       if item instanceof @Page 
         if item isnt @visiblePage
           @visiblePage = item
           item.update()
           @toolbar.setURL item.getPath()
+          @visiblePage.resizeBugFix()
       else
         @clearVisiblePage()
     atom.commands.add 'atom-workspace', 'core:save', => 

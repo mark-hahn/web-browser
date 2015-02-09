@@ -1,6 +1,8 @@
 
 # lib/page-view
 
+dbg = 0
+
 {$, View} = require 'atom-space-pen-views'
 SubAtom   = require 'sub-atom'
 urlUtil   = require 'url'
@@ -8,7 +10,7 @@ urlUtil   = require 'url'
 module.exports =
 class PageView extends View
 
-  @content: ->
+  @content = ->
     @div class:'browser-page native-key-bindings', tabindex:-1, =>
       @tag 'webview',
         outlet:            'webview'
@@ -16,63 +18,80 @@ class PageView extends View
         disablewebsecurity: yes
 
   initialize: (@page) ->
+    
+    @dbg = ++dbg
+    console.log 'initialize', @dbg
+    
     @subs = new SubAtom
     @page.setView @
-    @url          = @page.getPath()
-    @browser      = @page.getBrowser()
-    @webviewEle   = @webview[0]
-    @webviewProto = @webviewEle.__proto__
+    @url        = @page.getPath()
+    @browser    = @page.getBrowser()
+    @webviewEle = @webview[0]
+    @webview.attr src: @url
+    
+    process.nextTick =>
+      console.log 'process.nextTick'
+      @$tabFavicon = $ '<img class="tab-favicon">'
+      tabBarView   = $(atom.views.getView(atom.workspace.getActivePane()))
+                           .find('.tab-bar').view()
+      $tabView     = $ tabBarView.tabForItem @page
+      @tabEle      = $tabView[0]
+      $tabView.append @$tabFavicon
+      $tabView.find('.title').css paddingLeft: '2.7em'
 
-    @$tabFavicon = $ '<img class="tab-favicon">'
-    tabBarView   = $(atom.views.getView(atom.workspace.getActivePane())).find('.tab-bar').view()
-    $tabView     = $ tabBarView.tabForItem @page
-    @tabEle      = $tabView[0]
-    $tabView.append @$tabFavicon
-    $tabView.find('.title').css paddingLeft: '2.7em'
-
-    @loadingSetInterval = setInterval =>
-      loading = @webviewEle.isLoading()
-      if @faviconLoading isnt loading
-        @setFavicon (if loading then 'loading' else 'restore')
-    , 500
-
-    @setEvents()
-    @setURL @url
-
-  chkVisible: -> @webview.is ':visible'
+      @loadingSetInterval = setInterval =>
+        try
+          loading = @webviewEle.isLoading()
+          if @faviconLoading isnt loading
+            @setFavicon (if loading then 'loading' else 'restore')
+        catch e
+      , 500
+      
+      @setEvents()
+      @setURL @url
 
   setURL: (@url) ->
+    console.log 'setURL', @.dbg, @url
     @url = @url.replace /\/$/, ''
-    oldUrl = (if @chkVisible() then @webviewEle.getUrl()?.replace /\/$/, '')
+    oldUrl = try 
+        @webviewEle.getUrl().replace /\/$/, ''
+    catch e
     if @url isnt oldUrl
-      # #console.log 'setting webview src', @url
-      @update()
+      console.log '@url isnt oldUrl', @.dbg, @url
       @webview.attr src: @url
+      @update()
       
+  goBack:     -> @webviewEle.goBack()
+  goForward:  -> @webviewEle.goForward()
+  reload:     -> @webviewEle.reload()
   toggleLive: ->
     @live = not @live
     @page.setLive @live
     @update()
-    
-  reload: -> @webviewEle.reload()
 
   update: ->
+    console.log 'update', @.dbg
     @setFavicon urlUtil.parse(@url).hostname
     @title ?= @page.getTitle()
     @page.setTitle @title
     @tabEle.updateTitle @title
-    if @live then @tabEle.classList.add    'live'
-    else          @tabEle.classList.remove 'live'
-    @browser.setNavControls
-      goBack:        @webviewProto.goBack   .bind @webviewEle
-      goForward:     @webviewProto.goForward.bind @webviewEle
-      reload:        @reload.bind @
-      toggleLive:    @toggleLive.bind @
-      canReload:     yes
-      canGoBack:     (if @chkVisible() then @webviewEle.canGoBack())
-      canGoForward:  (if @chkVisible() then @webviewEle.canGoForward())
-      canToggleLive: yes
-    , @page
+    # if @live then @tabEle.classList.add    'live'
+    # else          @tabEle.classList.remove 'live'
+    # try
+    #   canGoBack    = @webviewEle.canGoBack()
+    #   canGoForward = @webviewEle.canGoForward()
+    # catch e
+    #   canGoBack = canGoForward = null
+    # @browser.setNavControls
+    #   goBack:        @goBack    .bind @
+    #   goForward:     @goForward .bind @
+    #   reload:        @reload    .bind @
+    #   toggleLive:    @toggleLive.bind @
+    #   canReload:     yes
+    #   canGoBack:     canGoBack
+    #   canGoForward:  canGoForward
+    #   canToggleLive: yes
+    # , @page
 
   setFavicon: (domain) ->
     # #console.log 'setFavicon', domain
