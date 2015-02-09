@@ -1,7 +1,7 @@
 
 # lib/toolbar-view
 
-{$, View}   = require 'atom'
+{$, View}   = require 'atom-space-pen-views'
 OmniboxView = require './omnibox-view'
 SubAtom     = require 'sub-atom'
 
