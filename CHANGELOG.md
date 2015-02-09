@@ -1,3 +1,7 @@
+## 1.1.5 - 2015/2/8
+
+- fixed tabs and cut/paste in input forms
+
 ## 1.1.4 - 2015/2/8
 
 - restored code commented out in last release for debugging

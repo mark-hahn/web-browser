@@ -2,3 +2,6 @@
 '.workspace':
   'ctrl-alt-b': 'web-browser:toggle'
 
+'body .pane .item-views .browser-page webview':
+  'tab':       'native!'
+  'shift-tab': 'native!'

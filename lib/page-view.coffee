@@ -7,10 +7,11 @@ urlUtil   = require 'url'
 
 module.exports =
 class PageView extends View
-
+  
   @content = ->
-    @div class:'browser-page native-key-bindings', tabindex:-1, =>
+    @div class:'browser-page', tabindex:-1, =>
       @tag 'webview',
+        class:             'native-key-bindings'
         outlet:            'webview'
         plugins:            yes
         disablewebsecurity: yes
