@@ -17,9 +17,6 @@ class PageView extends View
         disablewebsecurity: yes
 
   initialize: (@page) ->
-    # @dbg = ++dbg
-    # console.log 'initialize', @dbg
-    
     @subs = new SubAtom
     @page.setView @
     @url        = @page.getPath()
@@ -28,7 +25,6 @@ class PageView extends View
     @webview.attr src: @url
     
     process.nextTick =>
-      # console.log 'process.nextTick'
       @$tabFavicon = $ '<img class="tab-favicon">'
       tabBarView   = $(atom.views.getView(atom.workspace.getActivePane()))
                            .find('.tab-bar').view()
@@ -59,13 +55,13 @@ class PageView extends View
       @setURL @url
 
   setURL: (@url) ->
-    # console.log 'setURL', @.dbg, @url
+    # console.log 'setURL', @url
     @url = @url.replace /\/$/, ''
     oldUrl = try 
         @webviewEle.getUrl().replace /\/$/, ''
     catch e
     if @url isnt oldUrl
-      # console.log '@url isnt oldUrl', @.dbg, @url
+      # console.log '@url isnt oldUrl', @url, oldUrl
       @webview.attr src: @url
       @update()
       
@@ -121,7 +117,7 @@ class PageView extends View
 
   setEvents: ->
     @subs.add @webview, 'did-start-loading', (e) =>
-      #console.log 'webview did-start-loading'
+      # console.log 'webview did-start-loading'
       @setFavicon 'loading'
 
     @subs.add @webview, 'did-get-redirect-request', (e) =>
@@ -131,7 +127,7 @@ class PageView extends View
     @subs.add @webview, 'did-finish-load', =>
       @title = @webviewEle.getTitle()
       @url   = @webviewEle.getUrl().replace /\/$/, ''
-      #console.log 'webview did-finish-load', @url, @title
+      # console.log 'webview did-finish-load', @url
       @update()
 
     @subs.add @webview, 'did-fail-load', (e) =>

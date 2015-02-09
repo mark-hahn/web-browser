@@ -2,6 +2,10 @@
 '.workspace':
   'ctrl-alt-b': 'web-browser:toggle'
 
+'body':
+  'f12': 'unset!'
+
 'body .pane .item-views .browser-page webview':
   'tab':       'native!'
   'shift-tab': 'native!'
+  'f12': 'web-browser:toggle-dev'

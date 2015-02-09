@@ -17,10 +17,10 @@ class WebBrowser
         when not @toolbar.visible() then @toolbar.show().focus()
         when not @toolbar.focused() then @toolbar.focus()
         else @hideToolbar()
-
+          
     @openerDisposable = atom.workspace.addOpener (filePath, options) =>
       @delayedActivate()
-      if /https?:\/\//.test filePath then @createPage filePath
+      if /^(https?|file):\/\//i.test filePath then @createPage filePath
         
   delayedActivate: ->
     if not @isFullyActivated
@@ -84,6 +84,9 @@ class WebBrowser
     atom.commands.add 'atom-workspace', 'core:save', => 
       for page in @allPages
         page?.didSaveText()
+        
+    atom.commands.add 'atom-workspace', 'web-browser:toggle-dev': =>
+      @visiblePage?.toggleDev()
         
   pageDestroyed: (pageIn) ->
     for page, idx in @allPages

@@ -16,6 +16,7 @@ class Page
   setView:  (@pageView) ->
   setTitle: (@title) ->
   setURL:   (@url) -> @pageView.setURL url
+  toggleDev:       -> @pageView.toggleDev()
   
   # fixes a bug that causes webview to go blank until it is resized
   # https://github.com/atom/atom-shell/issues/1110
