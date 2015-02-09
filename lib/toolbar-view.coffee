@@ -21,7 +21,7 @@ class ToolbarView extends View
       @div outlet:'omniboxContainer', class:'omnibox-container'
       
       @div outlet: 'navBtnsRgt', class:'nav-btns right', =>
-        @span class:'octicon browser-btn octicon-three-bars'
+        @span outlet: 'bugbtn', class:'octicon browser-btn octicon-bug'
         
   initialize: (@browser) ->
     @subs = new SubAtom
@@ -32,16 +32,20 @@ class ToolbarView extends View
     @setEvents()
     
   setNavControls: ({
-      @goBack, @goForward, @reload, @toggleLive
-      canGoBack, canGoForward, canReload, canToggleLive}) -> 
+      @goBack, @goForward, @reload, @toggleLive, @toggleDev
+      canGoBack, canGoForward, pageShowing}) -> 
     if canGoBack     then @backBtn  .removeClass 'disabled'
     else                  @backBtn  .addClass    'disabled'
     if canGoForward  then @fwdBtn   .removeClass 'disabled'
     else                  @fwdBtn   .addClass    'disabled'
-    if canReload     then @reloadBtn.removeClass 'disabled'
-    else                  @reloadBtn.addClass    'disabled'
-    if canToggleLive then @liveBtn.removeClass   'disabled'
-    else                  @liveBtn.addClass      'disabled'
+    if pageShowing   
+      @reloadBtn.removeClass 'disabled'
+      @liveBtn.removeClass   'disabled'
+      @bugbtn.removeClass    'disabled'
+    else 
+      @reloadBtn.addClass 'disabled'
+      @liveBtn.addClass   'disabled'
+      @bugbtn.addClass    'disabled'
   
   focus:   -> @omniboxView.focus()
   focused: -> @isFocused
@@ -50,8 +54,8 @@ class ToolbarView extends View
   setURL:  (@url) -> @omniboxView.setURL url
     
   setEvents: ->
-    @omniboxView.onFocusChg (@isFocused) => 
-      if @isFocused then @navBtnsRgt.hide() else @navBtnsRgt.show()
+    # @omniboxView.onFocusChg (@isFocused) => 
+    #   if @isFocused then @navBtnsRgt.hide() else @navBtnsRgt.show()
     
     @subs.add @, 'click', (e) =>
       if (classes = $(e.target).attr 'class') and 
@@ -62,6 +66,7 @@ class ToolbarView extends View
           when 'arrow-right'       then @goForward?()
           when 'sync'              then @reload?()
           when 'file-symlink-file' then @toggleLive?()
+          when 'bug'               then @toggleDev?()
           
   destroy: ->
     @subs.dispose()

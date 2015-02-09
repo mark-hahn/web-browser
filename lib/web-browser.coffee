@@ -64,8 +64,8 @@ class WebBrowser
   clearVisiblePage: ->
     # console.log 'clearVisiblePage', @visiblePage?.getView?()?.dbg
     @toolbar.setNavControls 
-      goBack: null, goForward: null, reload: null, toggleLive: null
-      canGoBack: no, canGoForward: no, canReload: no, canToggleLive: no
+      goBack: null, goForward: null, reload: null, toggleLive: null, toggleDev: null
+      canGoBack: no, canGoForward: no, pageShowing: no
     @visiblePage = null
 
   setEvents: ->

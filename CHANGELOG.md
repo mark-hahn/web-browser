@@ -1,3 +1,8 @@
+## 1.1.6 - 2015/2/8
+
+- added dev console open/close (bug icon)
+- fixed fwd/back buttons
+
 ## 1.1.5 - 2015/2/8
 
 - fixed tabs and cut/paste in input forms

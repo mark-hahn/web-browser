@@ -43,6 +43,7 @@ class PageView extends View
           loading = @webviewEle.isLoading()
           if @faviconLoading isnt loading
             @setFavicon (if loading then 'loading' else 'restore')
+            if not loading then @update()
             # if @needResizeBugFix and not loading 
             #   @page.resizeBugFix()
             #   @needResizeBugFix = no
@@ -75,6 +76,12 @@ class PageView extends View
     @live = not @live
     @page.setLive @live
     @update()
+    
+  toggleDev: ->
+    if @webviewEle.isDevToolsOpened()
+      @webviewEle.closeDevTools()
+    else
+      @webviewEle.openDevTools()
 
   update: ->
     # console.log 'update', @.dbg
@@ -94,7 +101,8 @@ class PageView extends View
       goForward:     @goForward .bind @
       reload:        @reload    .bind @
       toggleLive:    @toggleLive.bind @
-      canReload:     yes
+      toggleDev:     @toggleDev .bind @
+      pageShowing:   yes
       canGoBack:     canGoBack
       canGoForward:  canGoForward
       canToggleLive: yes
