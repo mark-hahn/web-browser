@@ -81,23 +81,23 @@ class PageView extends View
     @title ?= @page.getTitle()
     @page.setTitle @title
     @tabEle.updateTitle @title
-    # if @live then @tabEle.classList.add    'live'
-    # else          @tabEle.classList.remove 'live'
-    # try
-    #   canGoBack    = @webviewEle.canGoBack()
-    #   canGoForward = @webviewEle.canGoForward()
-    # catch e
-    #   canGoBack = canGoForward = null
-    # @browser.setNavControls
-    #   goBack:        @goBack    .bind @
-    #   goForward:     @goForward .bind @
-    #   reload:        @reload    .bind @
-    #   toggleLive:    @toggleLive.bind @
-    #   canReload:     yes
-    #   canGoBack:     canGoBack
-    #   canGoForward:  canGoForward
-    #   canToggleLive: yes
-    # , @page
+    if @live then @tabEle.classList.add    'live'
+    else          @tabEle.classList.remove 'live'
+    try
+      canGoBack    = @webviewEle.canGoBack()
+      canGoForward = @webviewEle.canGoForward()
+    catch e
+      canGoBack = canGoForward = null
+    @browser.setNavControls
+      goBack:        @goBack    .bind @
+      goForward:     @goForward .bind @
+      reload:        @reload    .bind @
+      toggleLive:    @toggleLive.bind @
+      canReload:     yes
+      canGoBack:     canGoBack
+      canGoForward:  canGoForward
+      canToggleLive: yes
+    , @page
 
   setFavicon: (domain) ->
     # #console.log 'setFavicon', domain

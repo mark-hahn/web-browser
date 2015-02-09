@@ -1,3 +1,7 @@
+## 1.1.4 - 2015/2/8
+
+- restored code commented out in last release for debugging
+
 ## 1.1.3 - 2015/2/8
 
 - fixed multiple-pane exceptions
