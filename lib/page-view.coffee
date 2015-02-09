@@ -1,8 +1,6 @@
 
 # lib/page-view
 
-dbg = 0
-
 {$, View} = require 'atom-space-pen-views'
 SubAtom   = require 'sub-atom'
 urlUtil   = require 'url'
@@ -18,9 +16,8 @@ class PageView extends View
         disablewebsecurity: yes
 
   initialize: (@page) ->
-    
-    @dbg = ++dbg
-    console.log 'initialize', @dbg
+    # @dbg = ++dbg
+    # console.log 'initialize', @dbg
     
     @subs = new SubAtom
     @page.setView @
@@ -30,7 +27,7 @@ class PageView extends View
     @webview.attr src: @url
     
     process.nextTick =>
-      console.log 'process.nextTick'
+      # console.log 'process.nextTick'
       @$tabFavicon = $ '<img class="tab-favicon">'
       tabBarView   = $(atom.views.getView(atom.workspace.getActivePane()))
                            .find('.tab-bar').view()
@@ -39,25 +36,34 @@ class PageView extends View
       $tabView.append @$tabFavicon
       $tabView.find('.title').css paddingLeft: '2.7em'
 
+      # @oldSize = [0,0]
       @loadingSetInterval = setInterval =>
         try
           loading = @webviewEle.isLoading()
           if @faviconLoading isnt loading
             @setFavicon (if loading then 'loading' else 'restore')
+            # if @needResizeBugFix and not loading 
+            #   @page.resizeBugFix()
+            #   @needResizeBugFix = no
         catch e
+        # width  = @width()
+        # height = @height()
+        # if width isnt @oldSize[0] or height isnt @oldSize[1]
+        #   @oldSize = [width, height]
+        #   @needResizeBugFix = true
       , 500
       
       @setEvents()
       @setURL @url
 
   setURL: (@url) ->
-    console.log 'setURL', @.dbg, @url
+    # console.log 'setURL', @.dbg, @url
     @url = @url.replace /\/$/, ''
     oldUrl = try 
         @webviewEle.getUrl().replace /\/$/, ''
     catch e
     if @url isnt oldUrl
-      console.log '@url isnt oldUrl', @.dbg, @url
+      # console.log '@url isnt oldUrl', @.dbg, @url
       @webview.attr src: @url
       @update()
       
@@ -70,7 +76,7 @@ class PageView extends View
     @update()
 
   update: ->
-    console.log 'update', @.dbg
+    # console.log 'update', @.dbg
     @setFavicon urlUtil.parse(@url).hostname
     @title ?= @page.getTitle()
     @page.setTitle @title

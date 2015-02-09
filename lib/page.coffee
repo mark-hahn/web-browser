@@ -8,17 +8,21 @@ module.exports =
 class Page
   constructor: (@browser, @url) ->
     
-  copy: -> @browser.newPage @getPath()
-
+  copy: -> 
+    newPage = @browser.newPage @getPath()
+    setTimeout @resizeBugFix.bind(newPage), 3000
+    newPage
+    
   setView:  (@pageView) ->
   setTitle: (@title) ->
   setURL:   (@url) -> @pageView.setURL url
   
-  # fixes a bug that causes a webview to go blank until it is resized
+  # fixes a bug that causes webview to go blank until it is resized
+  # https://github.com/atom/atom-shell/issues/1110
   resizeBugFix: -> 
-    # @pageView.css width: 1, height: 1
-    # process.nextTick =>
-    #   @pageView.css width: '100%', height: '100%'
+    @pageView.css width: 1, height: 1
+    process.nextTick =>
+      @pageView.css width: '100%', height: '100%'
   
   setLive: (@live) -> 
   didSaveText: -> 

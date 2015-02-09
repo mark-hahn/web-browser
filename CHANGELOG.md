@@ -1,3 +1,7 @@
+## 1.1.3 - 2015/2/8
+
+- fixed multiple-pane exceptions
+
 ## 1.1.2 - 2015/2/7
 
 - added auto-reload feature

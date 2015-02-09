@@ -69,8 +69,9 @@ class WebBrowser
     @visiblePage = null
 
   setEvents: ->
+    
     @subs.add atom.workspace.onDidChangeActivePaneItem (item) =>
-      # console.log 'onDidChangeActivePaneItem', item?.getView?()?.dbg
+      # process.nextTick =>  this unfixes the fix
       if item instanceof @Page 
         if item isnt @visiblePage
           @visiblePage = item
@@ -79,6 +80,7 @@ class WebBrowser
           @visiblePage.resizeBugFix()
       else
         @clearVisiblePage()
+          
     atom.commands.add 'atom-workspace', 'core:save', => 
       for page in @allPages
         page?.didSaveText()
