@@ -1,5 +1,5 @@
 
-'.workspace':
+'atom-workspace':
   'ctrl-alt-b': 'web-browser:toggle'
 
 'body':
