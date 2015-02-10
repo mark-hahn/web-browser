@@ -48,7 +48,7 @@ class ToolbarView extends View
       @bugbtn.addClass    'disabled'
   
   focus:   -> @omniboxView.focus()
-  focused: -> @isFocused
+  focused: -> @omniboxView.isFocused()
 
   getOmniboxView: -> @omniboxView
   setURL:  (@url) -> @omniboxView.setURL url

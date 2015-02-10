@@ -18,8 +18,8 @@ class OmniboxView extends View
     @subs = new SubAtom
     @setEvents()
   
-  focus: -> @input.focus()
-  onFocusChg: (@focusCallback) ->
+  focus:     -> @input.focus()
+  isFocused: -> @input.is ':focus'
     
   setURL: (url) -> @input.val url.replace /\/$/, ''
 
@@ -43,15 +43,6 @@ class OmniboxView extends View
 
     @subs.add @input, 'changed', (e) => @browser.omniboxTextChanged()
       
-    # var @focused is used in pageView for speed
-    @subs.add @input, 'focus', =>
-      @focused = yes
-      @focusCallback? yes
-          
-    @subs.add @input, 'blur', =>
-      @focused = no
-      @focusCallback? no
-
   destroy: ->
     @subs.dispose()
     @detach()
