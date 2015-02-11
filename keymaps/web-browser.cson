@@ -9,3 +9,10 @@
   'tab':       'native!'
   'shift-tab': 'native!'
   'f12': 'web-browser:toggle-dev'
+  
+'.editor':
+  'ctrl-h': 'web-browser:search-google'
+
+# '.editor':
+#   'ctrl-alt-h': 'web-browser:search-devdocs'
+  

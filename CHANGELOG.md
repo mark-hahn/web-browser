@@ -1,3 +1,8 @@
+## 1.2.0 - 2015/2/11
+
+- added google search from selected test
+- added setting to open all web pages in right pane
+
 ## 1.1.8 - 2015/2/10
 
 - auto-reload now uses URL from when auto-reload set

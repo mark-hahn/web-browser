@@ -44,6 +44,8 @@ class PageView extends View
       
       @setEvents()
       @update()
+  
+  getPage: -> @page
       
   normalizeUrl: (url) ->
       if process.platform is 'win32' and

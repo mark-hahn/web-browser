@@ -1,6 +1,8 @@
 
 # lib/web-browser
 
+PageView  = require './page-view'
+
 class WebBrowser
   config:
     autoReloadDelay:
@@ -10,6 +12,11 @@ class WebBrowser
       minimum: 0.0
       maximum: 5.0
 
+    useRightPane:
+      title: 'Show all web pages in a right pane'
+      type: 'boolean'
+      default: false
+
   activate: ->
     atom.commands.add 'atom-workspace', 'web-browser:toggle': =>
       @delayedActivate()
@@ -18,9 +25,17 @@ class WebBrowser
         when not @toolbar.focused() then @toolbar.focus()
         else @hideToolbar()
           
+    atom.commands.add 'atom-workspace', 'web-browser:search-google': =>
+      @delayedActivate()
+      @webWordSearch 'google'
+      
+    # atom.commands.add 'atom-workspace', 'web-browser:search-devdocs': =>
+    #   @delayedActivate()
+    #   @webWordSearch 'devdocs.io'
+      
     @openerDisposable = atom.workspace.addOpener (filePath, options) =>
       @delayedActivate()
-      if /^(https?|file):\/\//i.test filePath then @createPage filePath
+      if /^(https?|file):\/\//i.test filePath then @createPage filePath, no
         
   delayedActivate: ->
     if not @isFullyActivated
@@ -36,18 +51,28 @@ class WebBrowser
       
   #### public ####
 
-  createPage: (url) ->
-    atom.workspace.getActivePane().activateItem @newPage url
+  createPage: (url, openOK = yes) ->
+    if openOK and atom.config.get 'web-browser.useRightPane'
+      atom.workspace.open url, split:'right'
+    else
+      atom.workspace.getActivePane().activateItem @newPage url
 
   setUrlOrCreatePage: (url) ->
-    url = url.replace /\/$/, ''
     if @visiblePage 
       @toolbar.setURL url
       @visiblePage.setURL url
-    else 
+    else
       @createPage url
       
   #### private ####
+
+  webWordSearch: (provider) ->
+    if (editor = atom.workspace.getActiveTextEditor()) and
+       (text = editor.getSelectedText())
+      # if provider is 'google'
+         @createPage 'https://google.com/search?q=' + encodeURI text
+      # else
+      #    @createPage 'http://devdocs.io/#q=' + encodeURI text
 
   hideToolbar: -> @toolbar.hide()
   
