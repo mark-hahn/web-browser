@@ -9,20 +9,20 @@ module.exports =
 class PageView extends View
   
   @content = ->
-    @div class:'browser-page', tabindex:-1, =>
-      @tag 'webview',
-        class:             'native-key-bindings'
-        outlet:            'webview'
-        plugins:            yes
-        disablewebsecurity: yes
-
+    @div class:'browser-page', tabindex:-1
+      
   initialize: (@page) ->
     @subs = new SubAtom
+    @browser = @page.getBrowser()
     @page.setView @
-    @url        = @page.getPath()
-    @browser    = @page.getBrowser()
+    
+    @url = @normalizeUrl @page.getPath()
+    @webview = $ """
+      <webview class="native-key-bindings" src="#{@url}"
+               plugins disablewebsecurity></webview>
+    """
+    @append @webview
     @webviewEle = @webview[0]
-    @webview.attr src: @url
     
     process.nextTick =>
       @$tabFavicon = $ '<img class="tab-favicon">'
@@ -33,41 +33,52 @@ class PageView extends View
       $tabView.append @$tabFavicon
       $tabView.find('.title').css paddingLeft: '2.7em'
 
-      # @oldSize = [0,0]
       @loadingSetInterval = setInterval =>
         try
           loading = @webviewEle.isLoading()
           if @faviconLoading isnt loading
             @setFavicon (if loading then 'loading' else 'restore')
             if not loading then @update()
-            # if @needResizeBugFix and not loading 
-            #   @page.resizeBugFix()
-            #   @needResizeBugFix = no
         catch e
-        # width  = @width()
-        # height = @height()
-        # if width isnt @oldSize[0] or height isnt @oldSize[1]
-        #   @oldSize = [width, height]
-        #   @needResizeBugFix = true
       , 500
       
       @setEvents()
-      @setURL @url
-
-  setURL: (@url) ->
-    # console.log 'setURL', @url
-    @url = @url.replace /\/$/, ''
-    oldUrl = try 
-        @webviewEle.getUrl().replace /\/$/, ''
-    catch e
-    if @url isnt oldUrl
-      # console.log '@url isnt oldUrl', @url, oldUrl
-      @webview.attr src: @url
       @update()
       
+  normalizeUrl: (url) ->
+      if process.platform is 'win32' and
+         (parts = /^(.*)(\W)([a-z])(:\/)(.*)$/.exec url)
+        parts[0] = ''
+        parts[3] = parts[3].toUpperCase()
+        url = parts.join ''
+      url.replace /\/$/, ''
+
+  setURL: (@url) ->
+    @url = @normalizeUrl @url
+    try 
+      oldUrl = @normalizeUrl @webviewEle.getUrl()
+    catch e
+      console.log 'setURL exception', @url
+    # console.log 'setURL', {oldUrl, @url}
+    if @url isnt oldUrl and @webview
+      # console.log '@url isnt oldUrl'
+      @webview.attr src: @url
+      @update()
+
   goBack:     -> @webviewEle.goBack()
   goForward:  -> @webviewEle.goForward()
-  reload:     -> @webviewEle.reload()
+  
+  reload: -> 
+    try 
+      url = @webviewEle.getUrl()
+    catch e
+      console.log 'reload exception', @url
+    if url is 'about:blank'
+      @webview.attr src: @url
+      @update()
+    else 
+      @webviewEle.reload()
+    
   toggleLive: ->
     @live = not @live
     @page.setLive @live
@@ -80,7 +91,7 @@ class PageView extends View
       @webviewEle.openDevTools()
 
   update: ->
-    # console.log 'update', @.dbg
+    # console.log 'update'
     @setFavicon urlUtil.parse(@url).hostname
     @title ?= @page.getTitle()
     @page.setTitle @title
@@ -122,51 +133,51 @@ class PageView extends View
 
     @subs.add @webview, 'did-get-redirect-request', (e) =>
       #console.log 'webview did-get-redirect-request', e.originalEvent.newUrl
-      # @page.setURL e.originalEvent.newUrl.replace /\/$/, ''
+      # @page.setURL @normalizeUrl e.originalEvent.newUrl
 
     @subs.add @webview, 'did-finish-load', =>
       @title = @webviewEle.getTitle()
-      @url   = @webviewEle.getUrl().replace /\/$/, ''
-      # console.log 'webview did-finish-load', @url
-      @update()
-
+      url    = @normalizeUrl @webviewEle.getUrl()
+      if url is 'about:blank'
+        # console.log 'webview did-finish-load about:blank', @url
+        # @replaceWebview @url
+      else
+        @url = url
+        # console.log 'webview did-finish-load normal', @url
+        @update()
     @subs.add @webview, 'did-fail-load', (e) =>
       url   = @webviewEle.getUrl()
       title = @webviewEle.getTitle()
       {errorCode, errorDescription} = e.originalEvent
-      #console.log 'webview did-fail-load', {url, title, errorCode, errorDescription}
-      # @setFavicon 'restore'
+      # console.log 'webview did-fail-load', {url, title, errorCode, errorDescription}
 
     @subs.add @webview, 'did-frame-finish-load', (e) =>
       url   = @webviewEle.getUrl()
       title = @webviewEle.getTitle()
       {isMainFrame} =  e.originalEvent
-      #console.log 'webview did-frame-finish-load', url, isMainFrame
-      # @setFavicon 'restore'
+      # console.log 'webview did-frame-finish-load', url, isMainFrame
 
     @subs.add @webview, 'did-stop-loading', =>
-      url   = @webviewEle.getUrl()
-      title = @webviewEle.getTitle()
-      #console.log 'webview did-stop-loading', {url, title, wvurl: @webviewEle.getUrl()}
+      # console.log 'webview did-stop-loading', {@url, wvurl: @webviewEle.getUrl()}
 
     @subs.add @webview, 'close', =>
-      #console.log 'webview close'
+      # console.log 'webview close'
 
     @subs.add @webview, 'crashed', =>
-      #console.log 'webview crashed'
+      # console.log 'webview crashed'
 
     @subs.add @webview, 'destroyed', =>
-      #console.log 'webview destroyed'
+      # console.log 'webview destroyed'
 
     @subs.add @webview, 'new-window', (e) =>
-      newUrl = e.originalEvent.url.replace /\/$/, ''
-      #console.log 'webview new-window', newUrl
+      newUrl = @normalizeUrl e.originalEvent.url
+      # console.log 'webview new-window', newUrl
       @browser.createPage newUrl
 
     @subs.add @webview, 'console-message', (e) =>
       {level, message, line, sourceId} = e.originalEvent
       # #console.log 'webview console-message', level, line, sourceId, '\n"'+message+'"'
-      #console.log '%c' + message, 'color: #00f'
+      # console.log '%c' + message, 'color: #00f'
 
   destroy: ->
     clearInterval @loadingSetInterval

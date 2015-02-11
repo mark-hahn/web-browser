@@ -1,3 +1,7 @@
+## 1.1.7 - 2015/2/10
+
+- fixed reload of local file
+
 ## 1.1.6 - 2015/2/8
 
 - added dev console open/close (bug icon)
