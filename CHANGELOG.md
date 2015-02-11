@@ -1,3 +1,7 @@
+## 1.1.8 - 2015/2/10
+
+- auto-reload now uses URL from when auto-reload set
+
 ## 1.1.7 - 2015/2/10
 
 - fixed reload of local file

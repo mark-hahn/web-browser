@@ -25,10 +25,10 @@ class Page
     process.nextTick =>
       @pageView.css width: '100%', height: '100%'
   
-  setLive: (@live) -> 
+  setLive: (@liveUrl) -> 
   didSaveText: -> 
-    if @live then setTimeout =>
-      @pageView.reload()
+    if @liveUrl then setTimeout =>
+      @pageView.setURL @liveUrl
     , 1000 * atom.config.get 'web-browser.autoReloadDelay'
   
   update: -> @pageView.update()

@@ -80,8 +80,9 @@ class PageView extends View
       @webviewEle.reload()
     
   toggleLive: ->
-    @live = not @live
-    @page.setLive @live
+    if not @liveUrl then @liveUrl = @url
+    else @liveUrl = null
+    @page.setLive @liveUrl
     @update()
     
   toggleDev: ->
@@ -96,8 +97,8 @@ class PageView extends View
     @title ?= @page.getTitle()
     @page.setTitle @title
     @tabEle.updateTitle @title
-    if @live then @tabEle.classList.add    'live'
-    else          @tabEle.classList.remove 'live'
+    if @liveUrl then @tabEle.classList.add    'live'
+    else             @tabEle.classList.remove 'live'
     try
       canGoBack    = @webviewEle.canGoBack()
       canGoForward = @webviewEle.canGoForward()
@@ -139,11 +140,10 @@ class PageView extends View
       @title = @webviewEle.getTitle()
       url    = @normalizeUrl @webviewEle.getUrl()
       if url is 'about:blank'
-        # console.log 'webview did-finish-load about:blank', @url
-        # @replaceWebview @url
+        console.log 'webview error: returned about:blank', @url
       else
         @url = url
-        # console.log 'webview did-finish-load normal', @url
+        # console.log 'webview did-finish-load', @url
         @update()
     @subs.add @webview, 'did-fail-load', (e) =>
       url   = @webviewEle.getUrl()
@@ -164,7 +164,7 @@ class PageView extends View
       # console.log 'webview close'
 
     @subs.add @webview, 'crashed', =>
-      # console.log 'webview crashed'
+      console.log 'webview crashed'
 
     @subs.add @webview, 'destroyed', =>
       # console.log 'webview destroyed'
