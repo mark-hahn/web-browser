@@ -55,22 +55,21 @@ class PageView extends View
         url = parts.join ''
       url.replace /\/$/, ''
 
-  setURL: (@url) ->
+  setURL: (@url, autoReload = no) ->
     @url = @normalizeUrl @url
     try 
       oldUrl = @normalizeUrl @webviewEle.getUrl()
     catch e
       console.log 'setURL exception', @url
-    # console.log 'setURL', {oldUrl, @url}
-    if @url isnt oldUrl and @webview
-      # console.log '@url isnt oldUrl'
-      @webview.attr src: @url
+    if @url isnt oldUrl
+      @webview?.attr src: @url
       @update()
+    if autoReload then setTimeout (=> @reload 'ignoreCache'), 200
 
   goBack:     -> @webviewEle.goBack()
   goForward:  -> @webviewEle.goForward()
   
-  reload: -> 
+  reload: (ignoreCache = no) -> 
     try 
       url = @webviewEle.getUrl()
     catch e
@@ -79,7 +78,9 @@ class PageView extends View
       @webview.attr src: @url
       @update()
     else 
-      @webviewEle.reload()
+      # console.log 'ignoreCache', ignoreCache
+      if ignoreCache then @webviewEle.reloadIgnoringCache()
+      else                @webviewEle.reload()
     
   toggleLive: ->
     if not @liveUrl then @liveUrl = @url
@@ -94,7 +95,8 @@ class PageView extends View
       @webviewEle.openDevTools()
 
   update: ->
-    # console.log 'update'
+    # console.log 'update', @url
+    @page.setURL @url
     @setFavicon urlUtil.parse(@url).hostname
     @title ?= @page.getTitle()
     @page.setTitle @title
@@ -116,6 +118,7 @@ class PageView extends View
       canGoBack:     canGoBack
       canGoForward:  canGoForward
       canToggleLive: yes
+      url:           @url
     , @page
 
   setFavicon: (domain) ->
@@ -147,11 +150,12 @@ class PageView extends View
         @url = url
         # console.log 'webview did-finish-load', @url
         @update()
+    
     @subs.add @webview, 'did-fail-load', (e) =>
       url   = @webviewEle.getUrl()
       title = @webviewEle.getTitle()
       {errorCode, errorDescription} = e.originalEvent
-      # console.log 'webview did-fail-load', {url, title, errorCode, errorDescription}
+      console.log 'webview did-fail-load', {url, title, errorCode, errorDescription}
 
     @subs.add @webview, 'did-frame-finish-load', (e) =>
       url   = @webviewEle.getUrl()
@@ -179,7 +183,7 @@ class PageView extends View
     @subs.add @webview, 'console-message', (e) =>
       {level, message, line, sourceId} = e.originalEvent
       # #console.log 'webview console-message', level, line, sourceId, '\n"'+message+'"'
-      # console.log '%c' + message, 'color: #00f'
+      console.log '%c' + message, 'color: #00f'
 
   destroy: ->
     clearInterval @loadingSetInterval

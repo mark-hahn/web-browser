@@ -1,3 +1,9 @@
+## 1.3.0 - 2015/2/xx
+
+- changed auto-reload to ignore cache
+- added ctrl-click on reload button to ignore cache
+- fixed omnibox url updating when switching tabs
+
 ## 1.2.0 - 2015/2/11
 
 - added google search from selected test

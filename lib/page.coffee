@@ -28,7 +28,7 @@ class Page
   setLive: (@liveUrl) -> 
   didSaveText: -> 
     if @liveUrl then setTimeout =>
-      @pageView.setURL @liveUrl
+      @pageView.setURL @liveUrl, 'autoReload'
     , 1000 * atom.config.get 'web-browser.autoReloadDelay'
   
   update: -> @pageView.update()

@@ -32,7 +32,7 @@ class ToolbarView extends View
     @setEvents()
     
   setNavControls: ({
-      @goBack, @goForward, @reload, @toggleLive, @toggleDev
+      url, @goBack, @goForward, @reload, @toggleLive, @toggleDev
       canGoBack, canGoForward, pageShowing}) -> 
     if canGoBack     then @backBtn  .removeClass 'disabled'
     else                  @backBtn  .addClass    'disabled'
@@ -46,6 +46,9 @@ class ToolbarView extends View
       @reloadBtn.addClass 'disabled'
       @liveBtn.addClass   'disabled'
       @bugbtn.addClass    'disabled'
+    if url 
+      @setURL url
+      # console.log 'toolbar view setNavControls', url
   
   focus:   -> @omniboxView.focus()
   focused: -> @omniboxView.isFocused()
@@ -64,7 +67,7 @@ class ToolbarView extends View
           when 'globe'             then @browser.hideToolbar()
           when 'arrow-left'        then @goBack?()
           when 'arrow-right'       then @goForward?()
-          when 'sync'              then @reload?()
+          when 'sync'              then @reload? e.ctrlKey
           when 'file-symlink-file' then @toggleLive?()
           when 'bug'               then @toggleDev?()
           

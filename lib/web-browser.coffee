@@ -96,12 +96,10 @@ class WebBrowser
   setEvents: ->
     
     @subs.add atom.workspace.onDidChangeActivePaneItem (item) =>
-      # process.nextTick =>  this unfixes the fix
       if item instanceof @Page 
         if item isnt @visiblePage
           @visiblePage = item
           item.update()
-          @toolbar.setURL item.getPath()
           @visiblePage.resizeBugFix()
       else
         @clearVisiblePage()
