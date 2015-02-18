@@ -1,4 +1,8 @@
-## 1.3.0 - 2015/2/xx
+## 1.4.0 - 2015/2/18
+
+- added devdocs.io search
+
+## 1.3.0 - 2015/2/13
 
 - changed auto-reload to ignore cache
 - added ctrl-click on reload button to ignore cache
@@ -6,7 +10,7 @@
 
 ## 1.2.0 - 2015/2/11
 
-- added google search from selected test
+- added google search from selected text
 - added setting to open all web pages in right pane
 
 ## 1.1.8 - 2015/2/10

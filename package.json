@@ -1,9 +1,8 @@
 {
   "name": "web-browser",
   "main": "./lib/web-browser",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A web browser that runs seamlessly in the Atom editor.",
-  "activationEvents": [],
   "repository": "https://github.com/mark-hahn/web-browser",
   "license": "MIT",
   "engines": {
@@ -12,6 +11,6 @@
   "dependencies": {
     "underscore": "*",
     "atom-space-pen-views": "^2.0.3",
-    "sub-atom": "0.*.*"
+    "sub-atom": "*"
   }
 }

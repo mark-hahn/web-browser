@@ -20,7 +20,9 @@ The browser is quite useful for testing a web page inside the same programming e
 
 ## Search for selected text
 
-If you are in a text file you can search for selected text in google using a single keystroke.  The google search results will appear in a new tab.  Execute the command `web-browser:search-google` (default keybinding is `ctrl-H`).
+If you are in a text file you can search for selected text in google or devdocs.io using a single keystroke.  The search results will appear in a new tab.  Execute the command `web-browser:search-google-it` (default keybinding is `ctrl-H`) or the command `web-browser:search-devdocs-it` (default keybinding is `ctrl-alt-H`).
+
+Note: before using devdocs.io you must go to the site (devdocs.io) while in Atom and select which technologies to include in the search.  If you don't you will always get "no results" when searching.
 
 ## Show all web pages in a right pane
 
@@ -37,6 +39,14 @@ This button toggles the auto-reload feature for the visible webpage.  When the f
 ![Image inserted by Atom editor package auto-host-markdown-image](http://i.imgur.com/LXN8tPQ.gif)
 
 This activates a simple live reload feature.  Whenever any source file in any tab is saved the web page is auto-reloaded.  There is a delay before the reload that can be set in settings.  The default is one second.  This delay gives the system time to process the file such as compiling coffeescript.  It is also recommended to use the `Show all web pages in a right pane` setting to see the page source and rendered web page at the same time.
+
+## Disable cache
+
+If you control-click on the reload button the page is loaded without using the cache.  Auto-reload always ignores the cache.
+
+## Development console
+
+F12 or the bug icon on the right will open/close the chromium inspector development console.  Note that F12 also does this for the Atom window.  So you may have to click or use the key several times to get the setup you want.
 
 ## Favorites
 

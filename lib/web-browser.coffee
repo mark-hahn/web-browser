@@ -1,7 +1,8 @@
 
 # lib/web-browser
 
-PageView  = require './page-view'
+PageView = require './page-view'
+SubAtom  = require 'sub-atom'
 
 class WebBrowser
   config:
@@ -18,30 +19,29 @@ class WebBrowser
       default: false
 
   activate: ->
-    atom.commands.add 'atom-workspace', 'web-browser:toggle': =>
+    @subs = new SubAtom
+    @subs.add atom.commands.add 'atom-workspace', 'web-browser:toggle': =>
       @delayedActivate()
       switch
         when not @toolbar.visible() then @toolbar.show().focus()
         when not @toolbar.focused() then @toolbar.focus()
         else @hideToolbar()
           
-    atom.commands.add 'atom-workspace', 'web-browser:search-google': =>
+    @subs.add atom.commands.add 'atom-workspace', 'web-browser:google-it': =>
       @delayedActivate()
       @webWordSearch 'google'
       
-    # atom.commands.add 'atom-workspace', 'web-browser:search-devdocs': =>
-    #   @delayedActivate()
-    #   @webWordSearch 'devdocs.io'
+    @subs.add atom.commands.add 'atom-workspace', 'web-browser:devdocs-it': =>
+      @delayedActivate()
+      @webWordSearch 'devdocs'
       
-    @openerDisposable = atom.workspace.addOpener (filePath, options) =>
+    @subs.add atom.workspace.addOpener (filePath, options) =>
       @delayedActivate()
       if /^(https?|file):\/\//i.test filePath then @createPage filePath, no
         
   delayedActivate: ->
     if not @isFullyActivated
       @isFullyActivated = yes
-      @subs = new (require('sub-atom'))
-      @subs.add @openerDisposable
       @toolbar = new (require('./toolbar'))(@)
       @clearVisiblePage()
       @hideToolbar()
@@ -69,10 +69,11 @@ class WebBrowser
   webWordSearch: (provider) ->
     if (editor = atom.workspace.getActiveTextEditor()) and
        (text = editor.getSelectedText())
-      # if provider is 'google'
-         @createPage 'https://google.com/search?q=' + encodeURI text
-      # else
-      #    @createPage 'http://devdocs.io/#q=' + encodeURI text
+      switch provider
+        when 'google'
+          @createPage 'https://google.com/search?q=' + encodeURI text
+        when 'devdocs'
+          @createPage 'http://devdocs.io/#q='        + encodeURI text
 
   hideToolbar: -> @toolbar.hide()
   
@@ -104,11 +105,11 @@ class WebBrowser
       else
         @clearVisiblePage()
           
-    atom.commands.add 'atom-workspace', 'core:save', => 
+    @subs.add atom.commands.add 'atom-workspace', 'core:save', => 
       for page in @allPages
         page?.didSaveText()
         
-    atom.commands.add 'atom-workspace', 'web-browser:toggle-dev': =>
+    @subs.add atom.commands.add 'atom-workspace', 'web-browser:toggle-dev': =>
       @visiblePage?.toggleDev()
         
   pageDestroyed: (pageIn) ->
