@@ -1,0 +1,58 @@
+//	AJOUTER LES METHODES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*
+this.modulo = function(a, b) {
+return (+a % (b = +b) + b) % b;
+};
+this.distance = function(a,b) {
+return (Math.sqrt(a*a + b*b))
+}
+this.setEmpty =function(aToken) {
+if (this.emptyToken) {this.emptyToken.setVisible(true)}
+aToken.setVisible(false);
+this.emptyToken = aToken;
+}
+this.tokenDistance = function(token1,token2) {
+return this.distance((token1.ix.row - token2.ix.row),(token1.ix.col - token2.ix.col))
+}
+// distanceFromTo
+this.distanceFromTo = function() {
+return this.tokenDistance(this.from,this.to)
+}
+this.switchFromTo = function() {
+this.switchToken(this.from,this.to);
+this.to = null;
+this.from = null;
+}
+this.switchToken = function(token1, token2) {
+if (token1 == this.emptyToken) {this.setEmpty(token2)}
+else if (token2 == this.emptyToken) {this.setEmpty(token1)}
+var frame1 = token1.getFrameNumber()
+token1.setFrameNumber(token2.getFrameNumber())
+token2.setFrameNumber(frame1)
+}
+this.nextFrame = function(aToken) {
+aToken.setFrameNumber(this.modulo((aToken.getFrameNumber() + 1),this.cellNr));
+};
+this.nullifyFromTo = function() {
+this.from = null
+this.to = null
+}
+this.mouseClicked = function(aToken) {
+if (clickMode == "clickFromTo") {
+if (this.from == null) {
+this.from = aToken
+this.cursor.setPosition(aToken.getPosition())
+this.cursor.getSprite(0).setVisible(true)
+} else {
+this.to = aToken
+this.cursor.getSprite(0).setVisible(false)
+master.turnPlayed(aToken)
+}
+}
+else if (clickMode == "clickOnce") {
+this.from = aToken;
+master.turnPlayed(aToken)
+}
+};
+}
+*/
