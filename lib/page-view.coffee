@@ -31,7 +31,8 @@ class PageView extends View
       $tabView     = $ tabBarView.tabForItem @page
       @tabEle      = $tabView[0]
       $tabView.append @$tabFavicon
-      $tabView.find('.title').css paddingLeft: '2.7em'
+      @$title = $tabView.find '.title'
+      @$title.css paddingLeft: '2.7em'
 
       @loadingSetInterval = setInterval =>
         try
@@ -100,7 +101,8 @@ class PageView extends View
     @setFavicon urlUtil.parse(@url).hostname
     @title ?= @page.getTitle()
     @page.setTitle @title
-    @tabEle.updateTitle @title
+    # @tabEle.updateTitle @title
+    @$title.text @title
     if @liveUrl then @tabEle.classList.add    'live'
     else             @tabEle.classList.remove 'live'
     try

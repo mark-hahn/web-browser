@@ -1,3 +1,7 @@
+## 1.4.1 - 2015/3/3
+
+- fixed setting text in tab
+
 ## 1.4.0 - 2015/2/18
 
 - added devdocs.io search
