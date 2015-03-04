@@ -5,12 +5,12 @@
 'body':
   'f12': 'unset!'
 
-'body .pane .item-views .browser-page webview':
+'body atom-pane .item-views .browser-page webview':
   'tab':       'native!'
   'shift-tab': 'native!'
   'f12': 'web-browser:toggle-dev'
   
-'.editor':
+'atom-text-editor':
   'ctrl-h': 'web-browser:google-it'
   'ctrl-alt-h': 'web-browser:devdocs-it'
   

@@ -1,3 +1,7 @@
+## 1.4.2 - 2015/3/3
+
+- fixed deprecations in keymap
+
 ## 1.4.1 - 2015/3/3
 
 - fixed setting text in tab
