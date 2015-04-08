@@ -1,3 +1,7 @@
+## 1.4.3 - 2015/4/7
+
+- Fixed crash on page load since atom 0.189.0
+
 ## 1.4.2 - 2015/3/3
 
 - fixed deprecations in keymap

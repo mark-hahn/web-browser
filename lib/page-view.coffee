@@ -97,7 +97,7 @@ class PageView extends View
 
   update: ->
     # console.log 'update', @url
-    @page.setURL @url
+    # @page.setURL @url
     @setFavicon urlUtil.parse(@url).hostname
     @title ?= @page.getTitle()
     @page.setTitle @title
