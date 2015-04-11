@@ -1,3 +1,7 @@
+## 1.4.4 - 2015/4/10
+
+- removed duplicate stylesheets folder (thanks @Aarilight)
+
 ## 1.4.3 - 2015/4/7
 
 - Fixed crash on page load since atom 0.189.0
