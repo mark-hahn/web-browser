@@ -1,5 +1,11 @@
 # Web-Browser package
 
+===================================
+
+** NOTE: Web-Browser has been deprecated in favor of the package [Browser-Plus](https://atom.io/packages/browser-plus). Web-Browser will no longer be supported.**
+
+===================================
+
 A web browser that runs seamlessly in the Atom editor
 
 ![Image inserted by Atom editor package auto-host-markdown-image](http://i.imgur.com/i7A83Sa.gif)
